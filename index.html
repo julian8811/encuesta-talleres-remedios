@@ -453,8 +453,8 @@ footer.inst .vig{font-size:12px;font-weight:600;letter-spacing:.04em;text-transf
     <div class="stack">
       <div class="res-head">
         <div>
-          <h2>Resultados en este dispositivo</h2>
-          <p>Resumen de las respuestas guardadas aquí. El consolidado de todos los equipos está en la hoja de Google.</p>
+          <h2 id="res-title">Resultados en este dispositivo</h2>
+          <p id="res-sub">Resumen de las respuestas guardadas aquí. El consolidado de todos los equipos está en la hoja de Google.</p>
         </div>
         <div class="field" style="min-width:220px">
           <label for="filtro">Taller</label>
@@ -464,6 +464,7 @@ footer.inst .vig{font-size:12px;font-weight:600;letter-spacing:.04em;text-transf
           </select>
         </div>
         <div class="actions" id="exports">
+          <button type="button" class="btn" id="res-reload" hidden>Actualizar</button>
           <button type="button" class="btn" id="exp-resp">Descargar respuestas (CSV)</button>
           <button type="button" class="btn" id="exp-atr">Descargar atractivos (CSV)</button>
         </div>
@@ -573,7 +574,7 @@ function showTab(which){
   $("#tab-res").setAttribute("aria-selected", !isForm);
   $("#view-form").hidden = !isForm; $("#view-res").hidden = isForm;
   document.body.dataset.view = isForm ? "form" : "res";
-  if(!isForm) renderResults();
+  if(!isForm){ renderResults(); if(!remote) loadRemote(); }
 }
 $("#tab-form").addEventListener("click", ()=>showTab("form"));
 $("#tab-res").addEventListener("click", ()=>showTab("res"));
@@ -723,7 +724,7 @@ $("#f").addEventListener("submit", async e=>{
   saveLocal(r);
   const ok = await sendToForm(r);
   sending = false; $("#submit").disabled = false;
-  if(ok){ toast("Respuesta guardada y enviada"); }
+  if(ok){ if(remote) remote.push(r); toast("Respuesta guardada y enviada"); }
   else {
     setPending(pendingList().concat([r]));
     toast(formReady() ? "Sin conexión: la respuesta quedó en este dispositivo" : "Respuesta guardada en este dispositivo");
@@ -770,7 +771,7 @@ async function sendToForm(r){
 async function flushPending(){
   const list = pendingList(); if(!list.length || !formReady()) return;
   const left = [];
-  for(const r of list){ if(!(await sendToForm(r))) left.push(r); }
+  for(const r of list){ if(await sendToForm(r)){ if(remote) remote.push(r); } else left.push(r); }
   setPending(left);
   const n = list.length - left.length;
   if(n) toast(n === 1 ? "Se envió 1 respuesta pendiente" : "Se enviaron "+n+" respuestas pendientes");
@@ -800,7 +801,23 @@ const fmt = n => n==null||isNaN(n) ? "—" : n.toLocaleString("es-CO",{maximumFr
 const mode = arr => { const c={}; arr.filter(Boolean).forEach(v=>c[v]=(c[v]||0)+1); let best="",m=0; for(const k in c) if(c[k]>m){m=c[k];best=k;} return best; };
 const avg = arr => { const v=arr.filter(x=>typeof x==="number"); return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null; };
 
-function filtered(){ const t=$("#filtro").value; return t ? responses.filter(r=>r.taller===t) : responses; }
+// URL /exec de la aplicación web doGet de google-form/crear_formulario.gs. Vacía: solo datos del dispositivo.
+const RESULTS_URL = "";
+let remote = null, remoteLoading = false, remoteError = false;
+
+async function loadRemote(){
+  if(!RESULTS_URL || remoteLoading) return;
+  remoteLoading = true; remoteError = false; renderResults();
+  try{
+    const res = await fetch(RESULTS_URL, {cache:"no-store"});
+    const data = await res.json();
+    if(!data.ok || !Array.isArray(data.respuestas)) throw new Error("respuesta inválida");
+    remote = data.respuestas;
+  }catch(e){ remoteError = true; }
+  remoteLoading = false; renderResults();
+}
+function resultSource(){ return remote ? remote.concat(pendingList()) : responses; }
+function filtered(){ const t=$("#filtro").value, rs=resultSource(); return t ? rs.filter(r=>r.taller===t) : rs; }
 
 function groupAtractivos(rs){
   const g = {};
@@ -821,6 +838,19 @@ function barsHTML(items, max, lowBelow){
 }
 
 function renderResults(){
+  const pend = pendingList().length;
+  $("#res-reload").hidden = !RESULTS_URL;
+  $("#res-reload").disabled = remoteLoading;
+  $("#res-reload").textContent = remoteLoading ? "Cargando…" : "Actualizar";
+  if(remote){
+    $("#res-title").textContent = "Resultados de todos los talleres";
+    $("#res-sub").textContent = "Consolidado de las respuestas recibidas en el Google Form" + (pend ? `, más ${pend} pendiente${pend>1?"s":""} de este dispositivo.` : ".");
+  } else {
+    $("#res-title").textContent = "Resultados en este dispositivo";
+    $("#res-sub").textContent = remoteLoading ? "Cargando el consolidado de todos los talleres…"
+      : remoteError ? "No se pudo cargar el consolidado; se muestran las respuestas guardadas aquí."
+      : "Resumen de las respuestas guardadas aquí. El consolidado de todos los equipos está en la hoja de Google.";
+  }
   const rs = filtered();
   const atr = groupAtractivos(rs);
   const gen = avg(rs.map(r=>r.general));
@@ -836,7 +866,9 @@ function renderResults(){
   ].map(([b,s])=>`<div class="kpi"><b>${b}</b><span>${s}</span></div>`).join("");
 
   if(!rs.length){
-    const msg = "Todavía no hay respuestas en este dispositivo. Aparecerán aquí en cuanto se guarde la primera.";
+    const msg = remoteLoading ? "Cargando respuestas…"
+      : remote ? "Todavía no hay respuestas para este filtro."
+      : "Todavía no hay respuestas en este dispositivo. Aparecerán aquí en cuanto se guarde la primera.";
     ["#sat-bars","#nec-bars","#perfil"].forEach(s=>$(s).innerHTML=`<p class="empty">${msg}</p>`);
     $("#atr-table").innerHTML = `<tbody><tr><td class="empty">${msg}</td></tr></tbody>`;
     $("#mejoras").innerHTML = "";
@@ -860,6 +892,7 @@ function renderResults(){
   $("#perfil").innerHTML = dist("sector","Sector") + dist("zona","Lugar de residencia") + dist("genero","Identidad") + dist("edad","Edad");
 }
 $("#filtro").addEventListener("change", renderResults);
+$("#res-reload").addEventListener("click", loadRemote);
 
 function refreshDatalists(){
   const uniq = arr => Array.from(new Set(arr.filter(Boolean))).sort((a,b)=>a.localeCompare(b,"es")).slice(0,200);

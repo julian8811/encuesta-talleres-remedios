@@ -117,6 +117,45 @@ function crearEncuesta() {
     SpreadsheetApp.openById(form.getDestinationId()).getUrl());
 }
 
+/**
+ * Resumen para la pestaña Resultados de la encuesta HTML.
+ * Implementar > Nueva implementación > Aplicación web · Ejecutar como: yo · Acceso: cualquier persona.
+ * No publica nombre, teléfono ni encuestador.
+ */
+const CLAVES_ASPECTOS = ["metodologia", "facilitacion", "informacion", "participacion", "logistica", "horario", "utilidad", "general"];
+
+function doGet() {
+  const respuestas = FormApp.openById(FORM_ID).getResponses().map(function (resp) {
+    const v = {};
+    resp.getItemResponses().forEach(function (ir) { v[ir.getItem().getTitle()] = ir.getResponse(); });
+    const txt = function (t) { const x = v[t]; return x == null ? "" : String(x); };
+    const num = function (t) { const x = parseInt(v[t], 10); return isNaN(x) ? null : x; };
+    const sat = {};
+    ASPECTOS.forEach(function (a, i) { if (CLAVES_ASPECTOS[i] !== "general") sat[CLAVES_ASPECTOS[i]] = num(a); });
+    const atractivos = [];
+    for (let n = 1; n <= 5; n++) {
+      const p = "Atractivo " + n + " · ";
+      if (!txt(p + "Nombre")) continue;
+      atractivos.push({
+        nombre: txt(p + "Nombre"), tipo: txt(p + "Tipo"), zona: txt(p + "Ubicación"), lugar: txt(p + "Corregimiento o vereda"),
+        acceso: txt(p + "Cómo se llega"), estado: txt(p + "Estado actual"), visitantes: txt(p + "Recibe visitantes"),
+        porque: txt(p + "Por qué lo recomendaría"), representativo: txt(p + "Es el más representativo") === "Sí"
+      });
+    }
+    return {
+      id: resp.getId(), creado: resp.getTimestamp().toISOString(),
+      taller: txt("Taller").charAt(0), fecha: txt("Fecha"), sede: txt("Sede del taller"),
+      sector: txt("Sector"), rol: txt("Ocupación o rol"), zona: txt("Dónde vive"), residencia: txt("Corregimiento, vereda o municipio"),
+      edad: txt("Edad"), genero: txt("Se identifica como"),
+      sat: sat, general: num("Satisfacción general con el taller"), recomienda: txt("Recomendaría participar"),
+      gusto: txt("Qué fue lo que más le gustó"), mejorar: txt("Qué deberíamos mejorar"),
+      necesidad: v["Necesidades del turismo"] || [], idea: txt("Idea o proyecto"), atractivos: atractivos
+    };
+  });
+  return ContentService.createTextOutput(JSON.stringify({ ok: true, respuestas: respuestas }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
 function avisarRespuesta(e) {
   const filas = e.response.getItemResponses()
     .filter(function (r) { const v = r.getResponse(); return v !== "" && v !== null && !(Array.isArray(v) && !v.length); })
