@@ -1,0 +1,905 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#172139">
+<title>Encuesta Talleres Remedios · Colegio Mayor de Antioquia</title>
+<link rel="icon" href="marca/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="marca/favicon-32.png">
+<link rel="apple-touch-icon" href="marca/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
+<style>
+/* Línea gráfica: Manual de Comunicaciones y Mercadeo CM-MA-002 V007 (paleta p. 23, tipografía p. 33). */
+:root{
+  color-scheme:light;
+  --navy:#172139; --teal:#108181; --aqua:#00AEAC; --deep:#195855; --lime:#B4C42C; --gold:#FBBB28; --orange:#E9901E;
+  --bg:#F7F4EA; --surface:#FFFFFF; --fg:#172139; --muted:#556072; --line:#E2DDCC; --line-strong:#CFC8B2;
+  --field:#FBFAF5; --brand:#195855; --brand2:#108181; --gold-soft:#FEF3D2; --on-brand:#FFFFFF;
+  --ok:#108181; --warn:#E9901E; --err:#B42318; --chip:#E3F2F1;
+  --font-display:"Montserrat", "Segoe UI", system-ui, sans-serif;
+  --font-body:"Montserrat", "Segoe UI", system-ui, sans-serif;
+  --r:14px; --r-sm:10px;
+  --shadow:0 1px 2px rgba(23,33,57,.06), 0 8px 24px rgba(23,33,57,.06);
+  --shell:1120px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* ---------- cabecera ---------- */
+.hero{background:var(--navy);color:#fff;padding-top:env(safe-area-inset-top,0px);position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:auto -120px -160px auto;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(0,174,172,.22),transparent 65%);pointer-events:none}
+.hero .in{max-width:var(--shell);margin:0 auto;padding:18px 20px 0;position:relative}
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brandrow img{height:clamp(44px,9vw,58px);width:auto;display:block}
+.brandrow .proj{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.72);text-align:right}
+.brandrow .proj b{display:block;color:var(--gold);font-weight:700}
+.hero-body{padding:34px 0 26px;max-width:760px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--aqua);font-weight:700;margin:0 0 10px}
+.eyebrow::before{content:"";width:22px;height:3px;border-radius:2px;background:var(--gold)}
+h1{font-family:var(--font-display);font-weight:800;font-size:clamp(26px,4.4vw,40px);line-height:1.12;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.hero .sub{margin:12px 0 0;color:rgba(255,255,255,.8);font-size:16px;max-width:620px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding:0;list-style:none}
+.meta li{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
+.meta li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--lime)}
+.meta li:nth-child(2)::before{background:var(--aqua)}
+.meta li:nth-child(3)::before{background:var(--gold)}
+.stripe{height:6px;background:linear-gradient(90deg,var(--gold) 0 25%,var(--teal) 25% 50%,var(--aqua) 50% 75%,var(--lime) 75% 100%)}
+
+/* ---------- pestañas ---------- */
+.tabs{display:inline-flex;gap:4px;padding:4px;margin:0 0 -1px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-bottom:0;border-radius:12px 12px 0 0}
+.tabs button{font-weight:700;font-size:14px;background:none;border:0;border-radius:9px;padding:10px 18px;color:rgba(255,255,255,.78);cursor:pointer}
+.tabs button:hover{color:#fff}
+.tabs button[aria-selected="true"]{background:var(--bg);color:var(--navy)}
+
+/* ---------- estructura ---------- */
+.shell{max-width:var(--shell);margin:0 auto;padding:28px 20px 40px;display:grid;grid-template-columns:240px minmax(0,1fr);gap:32px;align-items:start}
+body[data-view="res"] .shell{grid-template-columns:minmax(0,1fr)}
+body[data-view="res"] .toc{display:none}
+.content{min-width:0;display:flex;flex-direction:column;gap:18px}
+
+.toc{position:sticky;top:20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
+.toc h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 12px;font-weight:700}
+.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.toc a{display:flex;align-items:center;gap:10px;padding:8px 8px;border-radius:9px;color:var(--fg);text-decoration:none;font-size:14px;font-weight:600}
+.toc a:hover{background:var(--field)}
+.toc .dot{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;border:2px solid var(--line-strong);color:var(--muted);background:#fff}
+.toc li.done .dot{background:var(--teal);border-color:var(--teal);color:#fff}
+.toc li.done .dot::after{content:"✓"}
+.toc li.done .dot span{display:none}
+.progress{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.progress-top{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.progress-track{height:8px;border-radius:99px;background:var(--chip);overflow:hidden}
+.progress-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--aqua))}
+.toc .legal{margin-top:14px}
+
+.notice{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:12px 16px;font-size:14px;border-left:4px solid var(--aqua);box-shadow:var(--shadow)}
+.notice.warn{border-left-color:var(--orange);background:#FFFBF3}
+.notice.ok{border-left-color:var(--ok)}
+
+/* ---------- secciones ---------- */
+form{display:flex;flex-direction:column;gap:18px}
+fieldset{border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:0;margin:0;min-width:0;box-shadow:var(--shadow);overflow:hidden}
+legend{float:left;width:100%;padding:18px 24px 0;margin:0;display:flex;align-items:center;gap:12px;font-family:var(--font-display);font-weight:700;font-size:18px;color:var(--navy)}
+legend + *{clear:both}
+.num{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--navy);color:var(--gold);font-size:15px;font-weight:800}
+.fs-body{clear:both;padding:14px 24px 24px;display:flex;flex-direction:column;gap:18px}
+.lead{margin:0;color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px 16px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+label,.qlabel{font-weight:600;font-size:14px;color:var(--navy)}
+.hint{font-size:12.5px;color:var(--muted);font-weight:500}
+.req{color:var(--err)}
+input[type=text],input[type=tel],input[type=date],select,textarea{color:var(--fg);background:var(--field);border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:10px 12px;width:100%;min-height:46px;transition:border-color .15s,box-shadow .15s,background .15s}
+input:hover,select:hover,textarea:hover{border-color:var(--teal)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal);background:#fff;box-shadow:0 0 0 3px rgba(0,174,172,.18)}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23108181' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+textarea{min-height:88px;resize:vertical}
+.check{display:flex;gap:12px;align-items:flex-start;font-weight:500;font-size:14px;padding:12px 14px;border-radius:var(--r-sm);background:var(--field);border:1px solid var(--line)}
+.check input{width:20px;height:20px;margin-top:1px;accent-color:var(--teal);flex:none}
+
+/* escalas */
+.scale-head{display:none}
+.rates{display:flex;flex-direction:column}
+.rate{display:flex;flex-direction:column;gap:8px;padding:14px 0;border-top:1px solid var(--line)}
+.rate:first-child{border-top:0;padding-top:4px}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.scale button{font-weight:700;font-size:16px;min-height:44px;border-radius:var(--r-sm);border:1px solid var(--line-strong);background:var(--field);color:var(--navy);cursor:pointer;font-variant-numeric:tabular-nums;transition:background .12s,border-color .12s,transform .12s}
+.scale button:hover{border-color:var(--teal);background:#fff}
+.scale button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 4px 12px rgba(16,129,129,.28)}
+.scale-ends{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);font-weight:500}
+
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills button{font-size:14px;font-weight:600;border:1px solid var(--line-strong);background:var(--field);color:var(--navy);border-radius:999px;padding:9px 16px;min-height:42px;cursor:pointer;transition:background .12s,border-color .12s}
+.pills button:hover{border-color:var(--teal);background:#fff}
+.pills button[aria-pressed="true"]{background:var(--deep);border-color:var(--deep);color:#fff}
+.pills button[aria-pressed="true"]::before{content:"✓ "}
+
+.place{border:1px solid var(--line);border-left:4px solid var(--aqua);border-radius:var(--r-sm);padding:16px 18px;display:flex;flex-direction:column;gap:14px;background:var(--field)}
+.place-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.place-head strong{font-family:var(--font-display);color:var(--deep);font-size:15px}
+.btn{font-weight:700;font-size:14.5px;border-radius:var(--r-sm);padding:12px 20px;min-height:46px;cursor:pointer;border:1px solid var(--teal);background:var(--surface);color:var(--teal);transition:background .15s,transform .15s,box-shadow .15s}
+.btn:hover{background:var(--chip)}
+.btn.primary{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 6px 16px rgba(16,129,129,.3)}
+.btn.primary:hover{background:var(--deep);border-color:var(--deep)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.btn.dashed{border-style:dashed;background:transparent;width:100%}
+.btn.link{border:0;background:none;padding:6px 8px;min-height:0;color:var(--err);font-weight:600;box-shadow:none}
+.btn.link:hover{background:#FDECEA}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.err-msg{color:var(--err);font-weight:600;font-size:14px}
+
+.submitbar{position:sticky;bottom:0;z-index:6;margin:4px -20px 0;padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));background:rgba(247,244,234,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.submitbar .sb-info{font-size:13px;color:var(--muted);font-weight:600}
+.submitbar .sb-info b{color:var(--navy)}
+
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 20px;border-radius:999px;font-weight:700;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:calc(100% - 32px);text-align:center;z-index:20;border-left:4px solid var(--gold)}
+
+/* ---------- resultados ---------- */
+.res-head{display:flex;flex-wrap:wrap;gap:14px;align-items:end;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow)}
+.res-head h2{margin:0;font-size:20px;font-weight:800;color:var(--navy)}
+.res-head p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);border-top:4px solid var(--teal)}
+.kpi:nth-child(2){border-top-color:var(--gold)}
+.kpi:nth-child(3){border-top-color:var(--aqua)}
+.kpi:nth-child(4){border-top-color:var(--lime)}
+.kpi:nth-child(5){border-top-color:var(--orange)}
+.kpi b{display:block;font-family:var(--font-display);font-size:30px;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi span{font-size:12.5px;color:var(--muted);font-weight:600}
+.panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0;box-shadow:var(--shadow)}
+.panel.wide{grid-column:1 / -1}
+.panel h2{font-family:var(--font-display);font-size:16px;font-weight:700;margin:0;color:var(--navy);display:flex;align-items:center;gap:10px}
+.panel h2::before{content:"";width:4px;height:18px;border-radius:2px;background:var(--aqua)}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:minmax(120px,40%) 1fr 44px;gap:12px;align-items:center;font-size:13.5px}
+.track{height:10px;background:var(--chip);border-radius:99px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--aqua));border-radius:99px}
+.fill.low{background:var(--gold)}
+.bar .v{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:var(--field)}
+td.n{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+.tag{display:inline-block;background:var(--chip);color:var(--deep);border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.tag.star{background:var(--gold-soft);color:#8A5A00}
+.quotes{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.quotes li{border-left:3px solid var(--gold);padding:6px 12px;font-size:14px;background:var(--field);border-radius:0 8px 8px 0}
+.quotes li small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:end;justify-content:space-between}
+.stack{display:flex;flex-direction:column;gap:16px}
+.empty{color:var(--muted);font-size:14px}
+.legal{font-size:12px;color:var(--muted);margin:0;line-height:1.5}
+
+/* ---------- pie ---------- */
+footer.inst{background:var(--navy);color:#fff;padding-bottom:env(safe-area-inset-bottom,0px)}
+footer.inst .in{max-width:var(--shell);margin:0 auto;padding:28px 20px;display:grid;grid-template-columns:auto 1fr auto;gap:20px 32px;align-items:center}
+footer.inst img{height:46px;width:auto}
+footer.inst p{margin:0;font-size:13px;color:rgba(255,255,255,.78)}
+footer.inst .vig{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.65);text-align:right}
+
+/* ---------- escritorio ---------- */
+@media (min-width:900px){
+  .scale-head{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;font-size:11.5px;color:var(--muted);font-weight:600;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .scale-head .ends{display:flex;justify-content:space-between}
+  .rate{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:center;padding:10px 0}
+  .rate:first-child{padding-top:10px}
+  .rate .scale-ends{display:none}
+  .scale button{min-height:40px}
+}
+/* ---------- tableta y celular ---------- */
+@media (max-width:899px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:18px;padding-top:0}
+  .toc{position:sticky;top:0;z-index:7;margin:0 -20px;border-radius:0;border-width:0 0 1px;padding:10px 20px;box-shadow:0 4px 14px rgba(23,33,57,.06)}
+  .toc h2,.toc .legal{display:none}
+  .toc ol{flex-direction:row;justify-content:space-between;gap:4px}
+  .toc a{flex-direction:column;gap:4px;padding:4px;font-size:10.5px;text-align:center;line-height:1.2}
+  .toc a .lbl{max-width:64px}
+  .progress{margin-top:8px;padding-top:0;border-top:0}
+  .progress-top{display:none}
+  .panels{grid-template-columns:minmax(0,1fr)}
+  footer.inst .in{grid-template-columns:1fr;text-align:left}
+  footer.inst .vig{text-align:left}
+}
+@media (max-width:520px){
+  .hero-body{padding:24px 0 20px}
+  legend{padding:16px 18px 0;font-size:16.5px}
+  .fs-body{padding:12px 18px 20px}
+  .brandrow .proj{display:none}
+  .submitbar{flex-wrap:nowrap;padding-block:10px calc(10px + env(safe-area-inset-bottom,0px))}
+  .submitbar .sb-info{font-size:12px;line-height:1.3}
+  .submitbar .btn{flex:none;padding:10px 16px}
+  .tabs{width:100%}
+  .tabs button{flex:1}
+  .bar{grid-template-columns:minmax(90px,38%) 1fr 36px}
+}
+@media (prefers-reduced-motion:no-preference){.fill,.progress-fill{transition:width .4s ease}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="in">
+    <div class="brandrow">
+      <img src="marca/logo-colmayor-horizontal.png" alt="Institución Universitaria Colegio Mayor de Antioquia" width="877" height="262">
+      <p class="proj">Plan Municipal de Turismo<b>Remedios · Antioquia</b></p>
+    </div>
+    <div class="hero-body">
+      <p class="eyebrow">Talleres participativos</p>
+      <h1>Encuesta de satisfacción y atractivos del territorio</h1>
+      <p class="sub">Su opinión sobre el taller y los lugares que le mostraría a un visitante ayudan a construir el Plan Municipal de Turismo de Remedios.</p>
+      <ul class="meta">
+        <li>5 secciones</li>
+        <li>Unos 8 minutos</li>
+        <li>Datos protegidos · Ley 1581 de 2012</li>
+      </ul>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button id="tab-form" role="tab" aria-selected="true" aria-controls="view-form">Encuesta</button>
+      <button id="tab-res" role="tab" aria-selected="false" aria-controls="view-res">Resultados</button>
+    </nav>
+  </div>
+  <div class="stripe"></div>
+</header>
+
+<main class="shell">
+  <aside class="toc" aria-label="Secciones de la encuesta">
+    <h2>Secciones</h2>
+    <ol>
+      <li data-sec="1"><a href="#sec-1"><span class="dot"><span>1</span></span><span class="lbl">Datos del taller</span></a></li>
+      <li data-sec="2"><a href="#sec-2"><span class="dot"><span>2</span></span><span class="lbl">Participante</span></a></li>
+      <li data-sec="3"><a href="#sec-3"><span class="dot"><span>3</span></span><span class="lbl">Satisfacción</span></a></li>
+      <li data-sec="4"><a href="#sec-4"><span class="dot"><span>4</span></span><span class="lbl">Atractivos</span></a></li>
+      <li data-sec="5"><a href="#sec-5"><span class="dot"><span>5</span></span><span class="lbl">Plan de turismo</span></a></li>
+    </ol>
+    <div class="progress">
+      <div class="progress-top"><span>Avance</span><span id="prog-txt">0 de 5</span></div>
+      <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+    </div>
+    <p class="legal">Los campos con <span class="req">*</span> son obligatorios. Las respuestas se guardan también en este dispositivo.</p>
+  </aside>
+
+  <div class="content">
+  <div id="status" class="notice" hidden></div>
+
+  <!-- ============ ENCUESTA ============ -->
+  <section id="view-form" role="tabpanel" aria-labelledby="tab-form">
+    <form id="f" novalidate>
+      <fieldset id="sec-1">
+        <legend><span class="num">1</span>Datos del taller</legend>
+        <div class="fs-body">
+        <p class="lead">Información de la sesión en la que participa.</p>
+        <div class="grid">
+          <div class="field">
+            <label for="taller">Taller <span class="req">*</span></label>
+            <select id="taller" required>
+              <option value="">Seleccione…</option>
+              <option value="1">1 · Instalación y mapa de actores</option>
+              <option value="2">2 · Diagnóstico participativo</option>
+              <option value="3">3 · Visión y ejes estratégicos</option>
+              <option value="4">4 · Programas y proyectos</option>
+              <option value="5">5 · Plan de acción y validación</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha">
+          </div>
+          <div class="field">
+            <label for="sede">Sede del taller <span class="req">*</span></label>
+            <input type="text" id="sede" list="dl-sedes" placeholder="Ej.: cabecera municipal o nombre del corregimiento" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="encuestador">Encuestador(a)</label>
+            <input type="text" id="encuestador" placeholder="Nombre de quien aplica" autocomplete="off">
+            <span class="hint">Se recuerda en este dispositivo.</span>
+          </div>
+        </div>
+        </div>
+      </fieldset>
+
+      <fieldset id="sec-2">
+        <legend><span class="num">2</span>Participante</legend>
+        <div class="fs-body">
+        <p class="lead">Nos ayuda a saber quiénes participan. Nombre y teléfono son opcionales.</p>
+        <div class="field">
+          <span class="qlabel">Sector que representa</span>
+          <div class="pills" data-name="sector" data-single>
+            <button type="button" data-v="Público">Público</button>
+            <button type="button" data-v="Privado">Privado</button>
+            <button type="button" data-v="Sociedad civil">Sociedad civil</button>
+            <button type="button" data-v="Academia y cooperación">Academia y cooperación</button>
+            <button type="button" data-v="Habitante / independiente">Habitante / independiente</button>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="rol">Ocupación o rol</label>
+            <select id="rol">
+              <option value="">Seleccione…</option>
+              <option>Prestador de servicios turísticos</option>
+              <option>Comerciante</option>
+              <option>Minero artesanal / barequero</option>
+              <option>Agricultor / campesino</option>
+              <option>Líder comunitario / JAC</option>
+              <option>Gestor cultural / artesano</option>
+              <option>Servidor público</option>
+              <option>Docente / estudiante</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="zona">Dónde vive</label>
+            <select id="zona">
+              <option value="">Seleccione…</option>
+              <option>Cabecera municipal</option>
+              <option>Corregimiento</option>
+              <option>Vereda</option>
+              <option>Otro municipio</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="residencia">Nombre del corregimiento, vereda o municipio</label>
+            <input type="text" id="residencia" list="dl-lugares" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="edad">Edad</label>
+            <select id="edad">
+              <option value="">Seleccione…</option>
+              <option>18 a 28</option><option>29 a 45</option><option>46 a 60</option><option>Más de 60</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="genero">Se identifica como</label>
+            <select id="genero">
+              <option value="">Seleccione…</option>
+              <option>Mujer</option><option>Hombre</option><option>Otra identidad</option><option>Prefiere no decir</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="nombre">Nombre <span class="hint">(opcional)</span></label>
+            <input type="text" id="nombre" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="telefono">Teléfono <span class="hint">(opcional, para convocarle)</span></label>
+            <input type="tel" id="telefono" inputmode="tel" autocomplete="off">
+          </div>
+        </div>
+        <label class="check"><input type="checkbox" id="autoriza"> <span>Autorizo el tratamiento de mis datos personales para la formulación del Plan Municipal de Turismo (Ley 1581 de 2012).</span></label>
+        <span id="err-datos" class="err-msg" hidden>Para guardar nombre o teléfono, marque la autorización de datos.</span>
+        </div>
+      </fieldset>
+
+      <fieldset id="sec-3">
+        <legend><span class="num">3</span>Satisfacción con el taller</legend>
+        <div class="fs-body">
+        <p class="lead">Califique de 1 (muy insatisfecho) a 5 (muy satisfecho).</p>
+        <div class="scale-head" aria-hidden="true"><span>Aspecto</span><span class="ends"><span>1 · Muy insatisfecho</span><span>5 · Muy satisfecho</span></span></div>
+        <div id="rates" class="rates"></div>
+        <div class="field">
+          <span class="qlabel">¿Recomendaría a otras personas participar en los próximos talleres?</span>
+          <div class="pills" data-name="recomienda" data-single>
+            <button type="button" data-v="Sí">Sí</button>
+            <button type="button" data-v="Tal vez">Tal vez</button>
+            <button type="button" data-v="No">No</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="gusto">¿Qué fue lo que más le gustó?</label>
+          <textarea id="gusto"></textarea>
+        </div>
+        <div class="field">
+          <label for="mejorar">¿Qué deberíamos mejorar para el próximo taller?</label>
+          <textarea id="mejorar"></textarea>
+        </div>
+        </div>
+      </fieldset>
+
+      <fieldset id="sec-4">
+        <legend><span class="num">4</span>Lugares y atractivos turísticos</legend>
+        <div class="fs-body">
+        <p class="lead">¿Qué lugares, historias, fiestas, comidas u oficios de Remedios le mostraría a un visitante? Registre hasta 5.</p>
+        <div id="places" class="stack"></div>
+        <div class="actions"><button type="button" class="btn dashed" id="add-place">+ Agregar lugar o atractivo</button></div>
+        </div>
+      </fieldset>
+
+      <fieldset id="sec-5">
+        <legend><span class="num">5</span>Para el plan de turismo</legend>
+        <div class="fs-body">
+        <p class="lead">Prioridades e ideas para el futuro del turismo en el municipio.</p>
+        <div class="field">
+          <span class="qlabel">¿Qué necesita primero el turismo en Remedios? <span class="hint">(hasta 2)</span></span>
+          <div class="pills" data-name="necesidad" data-max="2">
+            <button type="button" data-v="Vías y acceso">Vías y acceso</button>
+            <button type="button" data-v="Seguridad">Seguridad</button>
+            <button type="button" data-v="Formación y capacitación">Formación y capacitación</button>
+            <button type="button" data-v="Promoción">Promoción</button>
+            <button type="button" data-v="Señalización">Señalización</button>
+            <button type="button" data-v="Alojamiento y servicios">Alojamiento y servicios</button>
+            <button type="button" data-v="Cuidado del patrimonio y la naturaleza">Cuidado del patrimonio y la naturaleza</button>
+            <button type="button" data-v="Financiación">Financiación</button>
+            <button type="button" data-v="Organización de los actores">Organización de los actores</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="idea">Una idea o proyecto para el turismo del municipio</label>
+          <textarea id="idea"></textarea>
+        </div>
+        </div>
+      </fieldset>
+
+      <div class="submitbar">
+        <span class="sb-info"><b id="sb-count">0 de 5</b> secciones con respuesta <span id="form-err" class="err-msg" hidden></span></span>
+        <button type="submit" class="btn primary" id="submit">Guardar respuesta</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ============ RESULTADOS ============ -->
+  <section id="view-res" role="tabpanel" aria-labelledby="tab-res" hidden>
+    <div class="stack">
+      <div class="res-head">
+        <div>
+          <h2>Resultados en este dispositivo</h2>
+          <p>Resumen de las respuestas guardadas aquí. El consolidado de todos los equipos está en la hoja de Google.</p>
+        </div>
+        <div class="field" style="min-width:220px">
+          <label for="filtro">Taller</label>
+          <select id="filtro">
+            <option value="">Todos los talleres</option>
+            <option value="1">Taller 1</option><option value="2">Taller 2</option><option value="3">Taller 3</option><option value="4">Taller 4</option><option value="5">Taller 5</option>
+          </select>
+        </div>
+        <div class="actions" id="exports">
+          <button type="button" class="btn" id="exp-resp">Descargar respuestas (CSV)</button>
+          <button type="button" class="btn" id="exp-atr">Descargar atractivos (CSV)</button>
+        </div>
+      </div>
+      <div class="kpis" id="kpis"></div>
+      <div class="panels">
+      <div class="panel">
+        <h2>Satisfacción por aspecto</h2>
+        <div class="bars" id="sat-bars"></div>
+      </div>
+      <div class="panel">
+        <h2>Prioridades para el plan</h2>
+        <div class="bars" id="nec-bars"></div>
+      </div>
+      <div class="panel wide">
+        <h2>Atractivos mencionados</h2>
+        <p class="hint" style="margin:0">Agrupados por nombre. La estrella indica cuántas personas lo señalaron como el más representativo.</p>
+        <div class="tablewrap"><table id="atr-table"></table></div>
+      </div>
+      <div class="panel">
+        <h2>Qué mejorar</h2>
+        <ul class="quotes" id="mejoras"></ul>
+      </div>
+      <div class="panel">
+        <h2>Participación</h2>
+        <div class="grid" id="perfil"></div>
+      </div>
+      </div>
+    </div>
+  </section>
+  </div>
+</main>
+
+<footer class="inst">
+  <div class="in">
+    <img src="marca/logo-colmayor-horizontal.png" alt="Institución Universitaria Colegio Mayor de Antioquia" width="877" height="262">
+    <p>Plan Municipal de Turismo de Remedios, Antioquia. Talleres participativos con actores del territorio.</p>
+    <p class="vig">Vigilada por el Ministerio de Educación Nacional</p>
+  </div>
+</footer>
+
+<datalist id="dl-sedes"></datalist>
+<datalist id="dl-lugares"></datalist>
+<datalist id="dl-atractivos"></datalist>
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script>
+(function(){
+"use strict";
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+const ASPECTOS = [
+  ["metodologia","Metodología y actividades"],
+  ["facilitacion","Trabajo del equipo facilitador"],
+  ["informacion","Claridad de la información"],
+  ["participacion","Oportunidad de participar y ser escuchado"],
+  ["logistica","Lugar, refrigerio y logística"],
+  ["horario","Horario y duración"],
+  ["utilidad","Utilidad para el plan de turismo"],
+  ["general","Satisfacción general con el taller"]
+];
+const TIPOS = ["Natural (río, quebrada, cascada, cueva, sendero, mirador)","Histórico o arquitectónico","Religioso","Minero y aurífero (mina, barequeo, orfebrería)","Gastronomía","Fiesta o evento","Saber u oficio tradicional","Otro"];
+const MAX_PLACES = 5;
+
+// ---------- Google Form ----------
+// action: https://docs.google.com/forms/d/e/<ID>/formResponse
+// Cada valor es el "entry.NNNN" de la pregunta, tomado del enlace precompletado del formulario.
+const ATR_FIELDS = ["nombre","tipo","zona","lugar","acceso","estado","visitantes","porque","representativo"];
+const GOOGLE_FORM = {
+  action: "https://docs.google.com/forms/d/e/1FAIpQLScFWX3PGl65jvlJfJWATB-rYvHJzBHx3OvCLZdTb2CrSjAmRQ/formResponse",
+  entries: {
+    taller:"entry.1074305907", fecha:"entry.1137723429", sede:"entry.812379465", encuestador:"entry.686011104",
+    sector:"entry.1066714337", rol:"entry.1594718619", zona:"entry.1885825655", residencia:"entry.643925965", edad:"entry.125256703", genero:"entry.1799527228",
+    nombre:"entry.915196340", telefono:"entry.366253136", autorizaDatos:"entry.1394587020",
+    metodologia:"entry.1173818189", facilitacion:"entry.1709869296", informacion:"entry.175579399", participacion:"entry.1241584512", logistica:"entry.600796005", horario:"entry.1606808888", utilidad:"entry.134012172", general:"entry.362551083",
+    recomienda:"entry.1569329297", gusto:"entry.383213213", mejorar:"entry.424471910", necesidad:"entry.756889083", idea:"entry.551961786",
+    atractivos: [{"nombre": "entry.1223772198", "tipo": "entry.1612167062", "zona": "entry.1955214441", "lugar": "entry.1073570837", "acceso": "entry.657527397", "estado": "entry.527623688", "visitantes": "entry.470673058", "porque": "entry.544945161", "representativo": "entry.1135317233"}, {"nombre": "entry.410136601", "tipo": "entry.1835709854", "zona": "entry.941278506", "lugar": "entry.1066660206", "acceso": "entry.1380424446", "estado": "entry.61608969", "visitantes": "entry.47946059", "porque": "entry.556790835", "representativo": "entry.550190397"}, {"nombre": "entry.279919225", "tipo": "entry.1026197316", "zona": "entry.1523351126", "lugar": "entry.425051041", "acceso": "entry.1430348449", "estado": "entry.899549861", "visitantes": "entry.586248550", "porque": "entry.322925541", "representativo": "entry.1182202097"}, {"nombre": "entry.368572389", "tipo": "entry.592814862", "zona": "entry.1198925611", "lugar": "entry.2122939471", "acceso": "entry.1168218351", "estado": "entry.481440976", "visitantes": "entry.1416709525", "porque": "entry.2072824591", "representativo": "entry.1556685251"}, {"nombre": "entry.1195796926", "tipo": "entry.873651279", "zona": "entry.1038156264", "lugar": "entry.2099446095", "acceso": "entry.168259779", "estado": "entry.696549310", "visitantes": "entry.1640252258", "porque": "entry.327306398", "representativo": "entry.1328661718"}]
+  }
+};
+const formReady = () => /^https:\/\/docs\.google\.com\/forms\/.+\/formResponse$/.test(GOOGLE_FORM.action)
+  && /^entry\.\d+$/.test(GOOGLE_FORM.entries.taller) && /^entry\.\d+$/.test(GOOGLE_FORM.entries.general);
+
+// ---------- state ----------
+let responses = [];
+let sending = false;
+const RESP_KEY = "rem_respuestas_v1";
+const PENDING_KEY = "rem_pendientes_v1";
+const ENC_KEY = "rem_encuestador_v1";
+
+function store(key, val){ try{ if(val===undefined) return localStorage.getItem(key); localStorage.setItem(key, val); }catch(e){ return null; } }
+function readList(key){ try{ return JSON.parse(store(key)||"[]"); }catch(e){ return []; } }
+function pendingList(){ return readList(PENDING_KEY); }
+function setPending(list){ store(PENDING_KEY, JSON.stringify(list)); renderStatus(); }
+function saveLocal(r){
+  responses = responses.filter(x=>x.id!==r.id).concat([r]);
+  if(store(RESP_KEY, JSON.stringify(responses)) === null){
+    showStatus("Este navegador no permite guardar en el dispositivo. Descargue el CSV antes de cerrar la página.", "warn");
+  }
+  refreshDatalists();
+}
+
+// ---------- tabs ----------
+function showTab(which){
+  const isForm = which === "form";
+  $("#tab-form").setAttribute("aria-selected", isForm);
+  $("#tab-res").setAttribute("aria-selected", !isForm);
+  $("#view-form").hidden = !isForm; $("#view-res").hidden = isForm;
+  document.body.dataset.view = isForm ? "form" : "res";
+  if(!isForm) renderResults();
+}
+$("#tab-form").addEventListener("click", ()=>showTab("form"));
+$("#tab-res").addEventListener("click", ()=>showTab("res"));
+
+// ---------- ratings ----------
+const ratesEl = $("#rates");
+ASPECTOS.forEach(([key,label])=>{
+  const w = document.createElement("div"); w.className = "rate";
+  const lab = document.createElement("span"); lab.className = "qlabel"; lab.id = "lbl-"+key;
+  lab.textContent = label; if(key==="general"){ const r=document.createElement("span"); r.className="req"; r.textContent=" *"; lab.appendChild(r); }
+  const sc = document.createElement("div"); sc.className = "scale"; sc.dataset.name = key; sc.setAttribute("role","group"); sc.setAttribute("aria-labelledby", lab.id);
+  for(let i=1;i<=5;i++){ const b=document.createElement("button"); b.type="button"; b.textContent=i; b.dataset.v=i; b.setAttribute("aria-pressed","false"); b.setAttribute("aria-label", label+": "+i); sc.appendChild(b); }
+  const ends = document.createElement("div"); ends.className="scale-ends"; ends.innerHTML="<span>Muy insatisfecho</span><span>Muy satisfecho</span>";
+  w.append(lab, sc, ends); ratesEl.appendChild(w);
+});
+document.addEventListener("click", e=>{
+  const b = e.target.closest(".scale button");
+  if(!b) return;
+  const on = b.getAttribute("aria-pressed")==="true";
+  $$("button", b.parentElement).forEach(x=>x.setAttribute("aria-pressed","false"));
+  if(!on) b.setAttribute("aria-pressed","true");
+});
+// pills
+document.addEventListener("click", e=>{
+  const b = e.target.closest(".pills button");
+  if(!b) return;
+  const g = b.parentElement, single = g.hasAttribute("data-single"), max = +g.dataset.max || 99;
+  const on = b.getAttribute("aria-pressed")==="true";
+  if(single){ $$("button", g).forEach(x=>x.setAttribute("aria-pressed","false")); if(!on) b.setAttribute("aria-pressed","true"); return; }
+  if(on){ b.setAttribute("aria-pressed","false"); return; }
+  const count = $$('button[aria-pressed="true"]', g).length;
+  if(count >= max){ toast("Puede elegir hasta "+max); return; }
+  b.setAttribute("aria-pressed","true");
+});
+function pillValue(name, multi){
+  const v = $$('.pills[data-name="'+name+'"] button[aria-pressed="true"]').map(b=>b.dataset.v);
+  return multi ? v : (v[0]||"");
+}
+function scaleValue(name){ const b = $('.scale[data-name="'+name+'"] button[aria-pressed="true"]'); return b ? +b.dataset.v : null; }
+
+// ---------- avance ----------
+function updateProgress(){
+  const val = id => ($("#"+id).value||"").trim();
+  const done = {
+    1: !!(val("taller") && val("sede")),
+    2: !!(pillValue("sector") || val("rol") || val("zona") || val("edad") || val("genero")),
+    3: !!scaleValue("general"),
+    4: $$('.place input[id$="-nombre"]').some(i=>i.value.trim()),
+    5: !!(pillValue("necesidad", true).length || val("idea"))
+  };
+  const n = Object.values(done).filter(Boolean).length;
+  $$(".toc li").forEach(li=>li.classList.toggle("done", !!done[li.dataset.sec]));
+  $("#prog-fill").style.width = (n/5*100)+"%";
+  $("#prog-txt").textContent = n+" de 5";
+  $("#sb-count").textContent = n+" de 5";
+}
+$("#f").addEventListener("input", updateProgress);
+$("#f").addEventListener("change", updateProgress);
+$("#f").addEventListener("click", e=>{ if(e.target.closest(".scale button,.pills button,[data-remove]")) setTimeout(updateProgress); });
+
+// ---------- places ----------
+let placeSeq = 0;
+function addPlace(){
+  const n = $$(".place").length;
+  if(n >= MAX_PLACES){ toast("Máximo "+MAX_PLACES+" lugares por persona"); return; }
+  const id = "p"+(++placeSeq);
+  const el = document.createElement("div"); el.className = "place"; el.dataset.id = id;
+  el.innerHTML = `
+    <div class="place-head"><strong>Lugar o atractivo</strong><button type="button" class="btn link" data-remove>Quitar</button></div>
+    <div class="grid">
+      <div class="field"><label for="${id}-nombre">Nombre</label><input type="text" id="${id}-nombre" list="dl-atractivos" autocomplete="off" placeholder="Como lo llama la gente"></div>
+      <div class="field"><label for="${id}-tipo">Tipo</label><select id="${id}-tipo"><option value="">Seleccione…</option>${TIPOS.map(t=>`<option>${t}</option>`).join("")}</select></div>
+      <div class="field"><label for="${id}-zona">Ubicación</label><select id="${id}-zona"><option value="">Seleccione…</option><option>Cabecera municipal</option><option>Corregimiento</option><option>Vereda</option></select></div>
+      <div class="field"><label for="${id}-lugar">Corregimiento o vereda</label><input type="text" id="${id}-lugar" list="dl-lugares" autocomplete="off"></div>
+      <div class="field"><label for="${id}-acceso">Cómo se llega</label><select id="${id}-acceso"><option value="">Seleccione…</option><option>A pie</option><option>Moto</option><option>Carro</option><option>Por río</option><option>A caballo o mula</option></select></div>
+      <div class="field"><label for="${id}-estado">Estado actual</label><select id="${id}-estado"><option value="">Seleccione…</option><option>Bueno</option><option>Regular</option><option>Malo</option></select></div>
+      <div class="field"><label for="${id}-visit">¿Recibe visitantes hoy?</label><select id="${id}-visit"><option value="">Seleccione…</option><option>Sí</option><option>A veces</option><option>No</option></select></div>
+    </div>
+    <div class="field"><label for="${id}-porque">¿Por qué lo recomendaría? ¿Qué historia tiene?</label><textarea id="${id}-porque"></textarea></div>
+    <label class="check"><input type="checkbox" id="${id}-rep"> <span>Es el lugar o atractivo más representativo de Remedios</span></label>`;
+  $("#places").appendChild(el);
+  $("#add-place").disabled = $$(".place").length >= MAX_PLACES;
+  return el;
+}
+$("#add-place").addEventListener("click", ()=>{ const el = addPlace(); if(el) el.querySelector("input").focus(); });
+$("#places").addEventListener("click", e=>{
+  if(e.target.matches("[data-remove]")){ e.target.closest(".place").remove(); $("#add-place").disabled = false; }
+});
+$("#places").addEventListener("change", e=>{
+  if(e.target.id.endsWith("-rep") && e.target.checked){ $$('.place input[id$="-rep"]').forEach(c=>{ if(c!==e.target) c.checked=false; }); }
+});
+function readPlaces(){
+  return $$(".place").map(el=>{
+    const id = el.dataset.id, g = s => ($("#"+id+"-"+s).value||"").trim();
+    return { nombre:g("nombre"), tipo:g("tipo"), zona:g("zona"), lugar:g("lugar"), acceso:g("acceso"), estado:g("estado"), visitantes:g("visit"), porque:g("porque"), representativo: $("#"+id+"-rep").checked };
+  }).filter(p=>p.nombre);
+}
+
+// ---------- form ----------
+const today = () => { const d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); };
+function resetForm(keep){
+  const f = $("#f");
+  const kept = { taller:$("#taller").value, fecha:$("#fecha").value, sede:$("#sede").value, enc:$("#encuestador").value };
+  f.reset();
+  $$('[aria-pressed="true"]').forEach(b=>b.setAttribute("aria-pressed","false"));
+  $("#places").innerHTML = ""; addPlace(); $("#add-place").disabled=false;
+  if(keep){ $("#taller").value=kept.taller; $("#fecha").value=kept.fecha; $("#sede").value=kept.sede; $("#encuestador").value=kept.enc; }
+  else { $("#fecha").value = today(); $("#encuestador").value = store(ENC_KEY)||""; }
+  $("#err-datos").hidden = true; $("#form-err").hidden = true;
+  updateProgress();
+}
+
+function collect(){
+  const sat = {}; ASPECTOS.forEach(([k])=>{ if(k!=="general") sat[k]=scaleValue(k); });
+  return {
+    taller: $("#taller").value, fecha: $("#fecha").value, sede: $("#sede").value.trim(), encuestador: $("#encuestador").value.trim(),
+    sector: pillValue("sector"), rol: $("#rol").value, zona: $("#zona").value, residencia: $("#residencia").value.trim(),
+    edad: $("#edad").value, genero: $("#genero").value,
+    nombre: $("#nombre").value.trim(), telefono: $("#telefono").value.trim(), autorizaDatos: $("#autoriza").checked,
+    sat, general: scaleValue("general"), recomienda: pillValue("recomienda"),
+    gusto: $("#gusto").value.trim(), mejorar: $("#mejorar").value.trim(),
+    atractivos: readPlaces(), necesidad: pillValue("necesidad", true), idea: $("#idea").value.trim(),
+    creado: new Date().toISOString()
+  };
+}
+function validate(r){
+  const errs = [];
+  if(!r.taller) errs.push("el taller");
+  if(!r.sede) errs.push("la sede");
+  if(!r.general) errs.push("la satisfacción general");
+  const datos = (r.nombre || r.telefono) && !r.autorizaDatos;
+  $("#err-datos").hidden = !datos;
+  if(datos) errs.push("la autorización de datos");
+  return errs;
+}
+
+$("#f").addEventListener("submit", async e=>{
+  e.preventDefault();
+  if(sending) return;
+  const r = collect();
+  const errs = validate(r);
+  if(errs.length){ const m=$("#form-err"); m.textContent = "Falta completar: "+errs.join(", ")+"."; m.hidden=false; return; }
+  if(!r.autorizaDatos){ r.nombre=""; r.telefono=""; }
+  store(ENC_KEY, r.encuestador);
+  r.id = "r" + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+  sending = true; $("#submit").disabled = true;
+  saveLocal(r);
+  const ok = await sendToForm(r);
+  sending = false; $("#submit").disabled = false;
+  if(ok){ toast("Respuesta guardada y enviada"); }
+  else {
+    setPending(pendingList().concat([r]));
+    toast(formReady() ? "Sin conexión: la respuesta quedó en este dispositivo" : "Respuesta guardada en este dispositivo");
+  }
+  resetForm(true);
+  window.scrollTo({top:0, behavior:"smooth"});
+});
+
+function formPayload(r){
+  const E = GOOGLE_FORM.entries, body = new URLSearchParams();
+  const put = (entry, val) => { if(entry && val !== "" && val != null) body.append(entry, String(val)); };
+  const tallerTxt = ($('#taller option[value="'+r.taller+'"]')||{}).textContent || r.taller;
+  put(E.taller, tallerTxt); put(E.sede, r.sede); put(E.encuestador, r.encuestador);
+  if(E.fecha && /^\d{4}-\d{2}-\d{2}$/.test(r.fecha)){
+    const [y, m, d] = r.fecha.split("-");
+    put(E.fecha+"_year", y); put(E.fecha+"_month", +m); put(E.fecha+"_day", +d);
+  }
+  put(E.sector, r.sector); put(E.rol, r.rol); put(E.zona, r.zona); put(E.residencia, r.residencia);
+  put(E.edad, r.edad); put(E.genero, r.genero);
+  put(E.nombre, r.nombre); put(E.telefono, r.telefono); put(E.autorizaDatos, r.autorizaDatos ? "Sí" : "No");
+  ASPECTOS.forEach(([k])=> put(E[k], k==="general" ? r.general : (r.sat||{})[k]));
+  put(E.recomienda, r.recomienda); put(E.gusto, r.gusto); put(E.mejorar, r.mejorar);
+  (r.necesidad||[]).forEach(n=>put(E.necesidad, n));
+  put(E.idea, r.idea);
+  (r.atractivos||[]).slice(0, MAX_PLACES).forEach((a, i)=>{
+    const slot = E.atractivos[i] || {};
+    ATR_FIELDS.forEach(k=> put(slot[k], k==="representativo" ? (a.representativo ? "Sí" : "No") : a[k]));
+  });
+  return body;
+}
+async function sendToForm(r){
+  if(!formReady() || !navigator.onLine) return false;
+  for(let attempt=0; attempt<2; attempt++){
+    try{
+      // Google Forms no expone CORS: la respuesta es opaca y solo se detectan fallas de red.
+      await fetch(GOOGLE_FORM.action, { method:"POST", mode:"no-cors", body: formPayload(r) });
+      return true;
+    }catch(err){
+      await new Promise(res=>setTimeout(res, 800 + Math.random()*800));
+    }
+  }
+  return false;
+}
+async function flushPending(){
+  const list = pendingList(); if(!list.length || !formReady()) return;
+  const left = [];
+  for(const r of list){ if(!(await sendToForm(r))) left.push(r); }
+  setPending(left);
+  const n = list.length - left.length;
+  if(n) toast(n === 1 ? "Se envió 1 respuesta pendiente" : "Se enviaron "+n+" respuestas pendientes");
+}
+window.addEventListener("online", flushPending);
+
+// ---------- status ----------
+function showStatus(html, kind){ const s=$("#status"); s.className="notice "+(kind||""); s.innerHTML=html; s.hidden=false; }
+function renderStatus(){
+  const n = pendingList().length;
+  const cuantas = `<strong>${n} respuesta${n>1?"s":""} sin enviar</strong>`;
+  if(!formReady()){
+    showStatus(`El envío al Google Form de la encuesta aún no está configurado. Las respuestas se guardan en este dispositivo${n ? " ("+cuantas+")" : ""} y se enviarán cuando se active el formulario. Mientras tanto, descargue el CSV en la pestaña Resultados.`, "warn");
+  } else if(n){
+    showStatus(`${cuantas} en este dispositivo. <button type="button" class="btn gold" id="retry" style="margin-left:8px;padding:6px 12px;min-height:36px">Enviar ahora</button>`, "warn");
+    $("#retry").addEventListener("click", flushPending);
+  } else { $("#status").hidden = true; }
+}
+
+let toastTimer;
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.hidden=false; clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.hidden=true, 2600); }
+
+// ---------- results ----------
+const esc = s => String(s??"").replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm = s => String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9ñ ]/g," ").replace(/\s+/g," ").trim();
+const fmt = n => n==null||isNaN(n) ? "—" : n.toLocaleString("es-CO",{maximumFractionDigits:1, minimumFractionDigits:1});
+const mode = arr => { const c={}; arr.filter(Boolean).forEach(v=>c[v]=(c[v]||0)+1); let best="",m=0; for(const k in c) if(c[k]>m){m=c[k];best=k;} return best; };
+const avg = arr => { const v=arr.filter(x=>typeof x==="number"); return v.length ? v.reduce((a,b)=>a+b,0)/v.length : null; };
+
+function filtered(){ const t=$("#filtro").value; return t ? responses.filter(r=>r.taller===t) : responses; }
+
+function groupAtractivos(rs){
+  const g = {};
+  rs.forEach(r=>(r.atractivos||[]).forEach(a=>{
+    const k = norm(a.nombre); if(!k) return;
+    (g[k] = g[k] || {names:[], tipos:[], lugares:[], estados:[], visit:[], n:0, rep:0, porque:[]});
+    const o=g[k]; o.n++; if(a.representativo) o.rep++;
+    o.names.push(a.nombre); o.tipos.push(a.tipo); o.lugares.push([a.zona,a.lugar].filter(Boolean).join(" · ")); o.estados.push(a.estado); o.visit.push(a.visitantes);
+    if(a.porque) o.porque.push(a.porque);
+  }));
+  return Object.values(g).map(o=>({nombre:mode(o.names), tipo:mode(o.tipos), lugar:mode(o.lugares), estado:mode(o.estados), visitantes:mode(o.visit), n:o.n, rep:o.rep, porque:o.porque}))
+    .sort((a,b)=> b.n-a.n || b.rep-a.rep || a.nombre.localeCompare(b.nombre,"es"));
+}
+
+function barsHTML(items, max, lowBelow){
+  if(!items.length) return '<p class="empty">Aún no hay datos.</p>';
+  return items.map(([label,val,txt])=>`<div class="bar"><span>${esc(label)}</span><div class="track"><div class="fill${lowBelow!=null&&val<lowBelow?" low":""}" style="width:${max? Math.max(2,val/max*100):0}%"></div></div><span class="v">${txt}</span></div>`).join("");
+}
+
+function renderResults(){
+  const rs = filtered();
+  const atr = groupAtractivos(rs);
+  const gen = avg(rs.map(r=>r.general));
+  const rec = rs.filter(r=>r.recomienda).length;
+  const recSi = rs.filter(r=>r.recomienda==="Sí").length;
+  const menciones = rs.reduce((a,r)=>a+(r.atractivos||[]).length,0);
+  $("#kpis").innerHTML = [
+    [rs.length, "respuestas"],
+    [fmt(gen), "satisfacción general (1 a 5)"],
+    [rec? Math.round(recSi/rec*100)+"%" : "—", "recomendaría participar"],
+    [atr.length, "atractivos distintos"],
+    [menciones, "menciones de lugares"]
+  ].map(([b,s])=>`<div class="kpi"><b>${b}</b><span>${s}</span></div>`).join("");
+
+  if(!rs.length){
+    const msg = "Todavía no hay respuestas en este dispositivo. Aparecerán aquí en cuanto se guarde la primera.";
+    ["#sat-bars","#nec-bars","#perfil"].forEach(s=>$(s).innerHTML=`<p class="empty">${msg}</p>`);
+    $("#atr-table").innerHTML = `<tbody><tr><td class="empty">${msg}</td></tr></tbody>`;
+    $("#mejoras").innerHTML = "";
+    return;
+  }
+  const satItems = ASPECTOS.map(([k,l])=>{ const v = avg(rs.map(r=> k==="general" ? r.general : (r.sat||{})[k])); return [l, v||0, fmt(v)]; });
+  $("#sat-bars").innerHTML = barsHTML(satItems, 5, 3.5);
+
+  $("#atr-table").innerHTML = `<thead><tr><th>Atractivo</th><th>Tipo</th><th>Ubicación</th><th>Estado</th><th>Recibe visitantes</th><th style="text-align:right">Menciones</th></tr></thead><tbody>` +
+    atr.slice(0,40).map(a=>`<tr><td><strong>${esc(a.nombre)}</strong>${a.rep?` <span class="tag star" title="Señalado como el más representativo">★ ${a.rep}</span>`:""}${a.porque.length?`<br><span class="hint">${esc(a.porque[0]).slice(0,140)}</span>`:""}</td><td>${a.tipo?`<span class="tag">${esc(a.tipo.split(" (")[0])}</span>`:"—"}</td><td>${esc(a.lugar)||"—"}</td><td>${esc(a.estado)||"—"}</td><td>${esc(a.visitantes)||"—"}</td><td class="n">${a.n}</td></tr>`).join("") + `</tbody>`;
+  if(!atr.length) $("#atr-table").innerHTML = `<tbody><tr><td class="empty">Nadie ha registrado lugares todavía.</td></tr></tbody>`;
+
+  const nc = {}; rs.forEach(r=>(r.necesidad||[]).forEach(n=>nc[n]=(nc[n]||0)+1));
+  const necItems = Object.entries(nc).sort((a,b)=>b[1]-a[1]).map(([k,v])=>[k,v,v]);
+  $("#nec-bars").innerHTML = barsHTML(necItems, necItems.length? necItems[0][1]:0);
+
+  const mej = rs.filter(r=>r.mejorar).slice(-12).reverse();
+  $("#mejoras").innerHTML = mej.length ? mej.map(r=>`<li>${esc(r.mejorar)}<small>Taller ${esc(r.taller)} · ${esc(r.sede)}</small></li>`).join("") : '<li class="empty" style="border:0">Sin sugerencias registradas.</li>';
+
+  const dist = (field, label) => { const c={}; rs.forEach(r=>{ const v=r[field]||"Sin dato"; c[v]=(c[v]||0)+1; }); const it=Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([k,v])=>[k,v,v]); return `<div class="stack"><strong>${label}</strong><div class="bars">${barsHTML(it, it[0][1])}</div></div>`; };
+  $("#perfil").innerHTML = dist("sector","Sector") + dist("zona","Lugar de residencia") + dist("genero","Identidad") + dist("edad","Edad");
+}
+$("#filtro").addEventListener("change", renderResults);
+
+function refreshDatalists(){
+  const uniq = arr => Array.from(new Set(arr.filter(Boolean))).sort((a,b)=>a.localeCompare(b,"es")).slice(0,200);
+  const opts = arr => arr.map(v=>`<option value="${esc(v)}"></option>`).join("");
+  $("#dl-sedes").innerHTML = opts(uniq(responses.map(r=>r.sede)));
+  $("#dl-lugares").innerHTML = opts(uniq(responses.flatMap(r=>[r.residencia].concat((r.atractivos||[]).map(a=>a.lugar)))));
+  $("#dl-atractivos").innerHTML = opts(groupAtractivos(responses).map(a=>a.nombre));
+}
+
+// ---------- CSV ----------
+function csv(rows){ return "﻿" + rows.map(r=>r.map(v=>{ const s=String(v??""); return /[;"\n\r]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s; }).join(";")).join("\r\n"); }
+function saveCsv(name, rows){
+  const url = URL.createObjectURL(new Blob([csv(rows)], {type:"text/csv;charset=utf-8"}));
+  const a = document.createElement("a"); a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+$("#exp-resp").addEventListener("click", ()=>{
+  const head = ["id","creado","taller","fecha","sede","encuestador","sector","rol","zona","residencia","edad","genero","nombre","telefono","autoriza_datos"]
+    .concat(ASPECTOS.map(a=>a[0]), ["recomienda","gusto","mejorar","necesidad","idea","n_atractivos"]);
+  const rows = filtered().map(r=>[r.id,r.creado,r.taller,r.fecha,r.sede,r.encuestador,r.sector,r.rol,r.zona,r.residencia,r.edad,r.genero,r.nombre,r.telefono,r.autorizaDatos?"Sí":"No"]
+    .concat(ASPECTOS.map(([k])=> k==="general" ? r.general : (r.sat||{})[k]), [r.recomienda,r.gusto,r.mejorar,(r.necesidad||[]).join(" | "),r.idea,(r.atractivos||[]).length]));
+  saveCsv("encuesta_talleres_remedios.csv", [head].concat(rows));
+});
+$("#exp-atr").addEventListener("click", ()=>{
+  const head = ["respuesta_id","taller","sede","atractivo","tipo","ubicacion","corregimiento_vereda","acceso","estado","recibe_visitantes","representativo","por_que"];
+  const rows = [];
+  filtered().forEach(r=>(r.atractivos||[]).forEach(a=>rows.push([r.id,r.taller,r.sede,a.nombre,a.tipo,a.zona,a.lugar,a.acceso,a.estado,a.visitantes,a.representativo?"Sí":"No",a.porque])));
+  saveCsv("atractivos_mencionados_remedios.csv", [head].concat(rows));
+});
+
+// ---------- boot ----------
+responses = readList(RESP_KEY).sort((a,b)=>String(a.creado).localeCompare(String(b.creado)));
+resetForm(false);
+refreshDatalists();
+renderStatus();
+renderResults();
+if (location.hash === "#resultados") showTab("res");
+flushPending();
+})();
+</script>
+
+</body></html>
