@@ -20,6 +20,7 @@ TITULOS = {
     "Recomendaría participar": "recomienda", "Qué fue lo que más le gustó": "gusto",
     "Qué deberíamos mejorar": "mejorar", "Necesidades del turismo": "necesidad", "Idea o proyecto": "idea",
 }
+OPCIONALES = {"Consentimiento informado": "consentimiento"}
 ATR = {
     "Nombre": "nombre", "Tipo": "tipo", "Ubicación": "zona", "Corregimiento o vereda": "lugar",
     "Cómo se llega": "acceso", "Estado actual": "estado", "Recibe visitantes": "visitantes",
@@ -44,6 +45,8 @@ def main():
             atr[int(m.group(1)) - 1][ATR[m.group(2)]] = f"entry.{eid}"
         elif titulo in TITULOS:
             base[TITULOS[titulo]] = f"entry.{eid}"
+        elif titulo in OPCIONALES:
+            base[OPCIONALES[titulo]] = f"entry.{eid}"
 
     faltan = [k for k in TITULOS.values() if k not in base]
     faltan += [f"atractivo{i + 1}.{k}" for i, a in enumerate(atr) for k in ATR.values() if k not in a]

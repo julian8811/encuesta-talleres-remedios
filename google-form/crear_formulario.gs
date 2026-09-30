@@ -37,6 +37,23 @@ const ESTADOS = ["Bueno", "Regular", "Malo"];
 const VISITANTES = ["Sí", "A veces", "No"];
 const SI_NO = ["Sí", "No"];
 
+const TEXTO_CONSENTIMIENTO = "Acepto participar voluntariamente y autorizo a la Institución Universitaria Colegio Mayor de Antioquia " +
+  "a tratar la información de esta encuesta según su política de tratamiento de datos personales (Ley 1581 de 2012).";
+
+/**
+ * Agrega la pregunta de consentimiento al inicio sin borrar preguntas ni respuestas existentes.
+ * Ejecútela una sola vez sobre un formulario ya creado con crearEncuesta.
+ */
+function agregarConsentimiento() {
+  const form = FormApp.openById(FORM_ID);
+  const ya = form.getItems().some(function (it) { return it.getTitle() === "Consentimiento informado"; });
+  if (ya) { Logger.log("La pregunta de consentimiento ya existe."); return; }
+  const item = form.addMultipleChoiceItem().setTitle("Consentimiento informado").setChoiceValues(["Sí"])
+    .setHelpText(TEXTO_CONSENTIMIENTO);
+  form.moveItem(item.getIndex(), 0);
+  Logger.log("Pregunta de consentimiento agregada al inicio.");
+}
+
 function crearEncuesta() {
   const form = FormApp.openById(FORM_ID);
   form.getItems().forEach(function (it) { form.deleteItem(it); });
@@ -55,6 +72,8 @@ function crearEncuesta() {
   const unica = function (t, opts) { return form.addMultipleChoiceItem().setTitle(t).setChoiceValues(opts); };
   const corta = function (t, req) { return form.addTextItem().setTitle(t).setRequired(!!req); };
   const parrafo = function (t) { return form.addParagraphTextItem().setTitle(t); };
+
+  unica("Consentimiento informado", ["Sí"]).setHelpText(TEXTO_CONSENTIMIENTO);
 
   form.addSectionHeaderItem().setTitle("1. Datos del taller");
   lista("Taller", TALLERES, true);
@@ -143,7 +162,7 @@ function doGet() {
       });
     }
     return {
-      id: resp.getId(), creado: resp.getTimestamp().toISOString(),
+      id: resp.getId(), creado: resp.getTimestamp().toISOString(), consentimiento: txt("Consentimiento informado") === "Sí",
       taller: txt("Taller").charAt(0), fecha: txt("Fecha"), sede: txt("Sede del taller"),
       sector: txt("Sector"), rol: txt("Ocupación o rol"), zona: txt("Dónde vive"), residencia: txt("Corregimiento, vereda o municipio"),
       edad: txt("Edad"), genero: txt("Se identifica como"),

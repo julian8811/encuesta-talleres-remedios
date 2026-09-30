@@ -137,6 +137,30 @@ textarea{min-height:88px;resize:vertical}
 .actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .err-msg{color:var(--err);font-weight:600;font-size:14px}
 
+/* consentimiento y política */
+#sec-0{border-top:4px solid var(--gold)}
+#sec-0 .num{background:var(--gold);color:var(--navy)}
+.consent-points{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:620px){.consent-points{grid-template-columns:minmax(0,1fr)}}
+.consent-points li{font-size:13.5px;line-height:1.5;padding:12px 14px;border-radius:var(--r-sm);background:var(--field);border:1px solid var(--line)}
+.consent-points b{display:block;color:var(--navy);font-size:13px;margin-bottom:2px}
+.check.accept{border-color:var(--teal);background:#EEF8F7}
+.check.accept.invalid{border-color:var(--err);background:#FDECEA}
+.linkbtn{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--teal);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+dialog.policy{width:min(760px,calc(100% - 24px));max-height:min(86vh,900px);padding:0;border:0;border-radius:var(--r);box-shadow:0 24px 60px rgba(23,33,57,.35);color:var(--fg)}
+dialog.policy::backdrop{background:rgba(23,33,57,.6)}
+.policy-head{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 24px;background:var(--navy);color:#fff;border-bottom:4px solid var(--gold)}
+.policy-head h2{margin:0;font-family:var(--font-display);font-size:18px}
+.policy-head button{background:rgba(255,255,255,.12);border:0;color:#fff;border-radius:8px;width:36px;height:36px;font-size:20px;cursor:pointer}
+.policy-body{padding:20px 24px 24px;font-size:14px;line-height:1.6}
+.policy-body h3{font-family:var(--font-display);font-size:15px;color:var(--navy);margin:18px 0 6px}
+.policy-body h3:first-child{margin-top:0}
+.policy-body p,.policy-body ul{margin:0 0 8px}
+.policy-body ul{padding-left:20px}
+.policy-body a{color:var(--teal);font-weight:600}
+.policy-foot{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px;padding:0 24px 22px}
+footer.inst .vig a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
+
 .submitbar{position:sticky;bottom:0;z-index:6;margin:4px -20px 0;padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));background:rgba(247,244,234,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .submitbar .sb-info{font-size:13px;color:var(--muted);font-weight:600}
 .submitbar .sb-info b{color:var(--navy)}
@@ -202,9 +226,10 @@ footer.inst .vig{font-size:12px;font-weight:600;letter-spacing:.04em;text-transf
   .shell{grid-template-columns:minmax(0,1fr);gap:18px;padding-top:0}
   .toc{position:sticky;top:0;z-index:7;margin:0 -20px;border-radius:0;border-width:0 0 1px;padding:10px 20px;box-shadow:0 4px 14px rgba(23,33,57,.06)}
   .toc h2,.toc .legal{display:none}
-  .toc ol{flex-direction:row;justify-content:space-between;gap:4px}
-  .toc a{flex-direction:column;gap:4px;padding:4px;font-size:10.5px;text-align:center;line-height:1.2}
-  .toc a .lbl{max-width:64px}
+  .toc ol{flex-direction:row;justify-content:space-between;gap:2px}
+  .toc li{flex:1 1 0;min-width:0}
+  .toc a{flex-direction:column;gap:4px;padding:4px 2px;font-size:10px;text-align:center;line-height:1.2}
+  .toc a .lbl{max-width:100%;hyphens:auto;overflow-wrap:anywhere}
   .progress{margin-top:8px;padding-top:0;border-top:0}
   .progress-top{display:none}
   .panels{grid-template-columns:minmax(0,1fr)}
@@ -256,6 +281,7 @@ footer.inst .vig{font-size:12px;font-weight:600;letter-spacing:.04em;text-transf
   <aside class="toc" aria-label="Secciones de la encuesta">
     <h2>Secciones</h2>
     <ol>
+      <li data-sec="0"><a href="#sec-0"><span class="dot"><span>✓</span></span><span class="lbl">Consenti&shy;miento</span></a></li>
       <li data-sec="1"><a href="#sec-1"><span class="dot"><span>1</span></span><span class="lbl">Datos del taller</span></a></li>
       <li data-sec="2"><a href="#sec-2"><span class="dot"><span>2</span></span><span class="lbl">Participante</span></a></li>
       <li data-sec="3"><a href="#sec-3"><span class="dot"><span>3</span></span><span class="lbl">Satisfacción</span></a></li>
@@ -275,6 +301,22 @@ footer.inst .vig{font-size:12px;font-weight:600;letter-spacing:.04em;text-transf
   <!-- ============ ENCUESTA ============ -->
   <section id="view-form" role="tabpanel" aria-labelledby="tab-form">
     <form id="f" novalidate>
+      <fieldset id="sec-0">
+        <legend><span class="num">✓</span>Consentimiento informado</legend>
+        <div class="fs-body">
+        <p class="lead">Antes de empezar, lea cómo usaremos la información que nos entregue.</p>
+        <ul class="consent-points">
+          <li><b>Quién la recoge</b>La Institución Universitaria Colegio Mayor de Antioquia, en el marco de la formulación del Plan Municipal de Turismo de Remedios.</li>
+          <li><b>Para qué</b>Evaluar los talleres participativos e identificar los atractivos turísticos del territorio. Los resultados se presentan de forma agregada.</li>
+          <li><b>Participación voluntaria</b>Puede dejar preguntas sin responder o no participar, sin ninguna consecuencia. La encuesta puede ser anónima.</li>
+          <li><b>Sus derechos</b>Conocer, actualizar, rectificar y pedir la supresión de sus datos, y revocar esta autorización (Ley 1581 de 2012).</li>
+        </ul>
+        <p class="legal">Conozca la <button type="button" class="linkbtn" data-open-policy>política de tratamiento de datos personales</button> de la encuesta y la <a href="https://www.colmayor.edu.co/politicas-de-privacidad/" target="_blank" rel="noopener">política de privacidad institucional</a>.</p>
+        <label class="check accept" id="consent-box"><input type="checkbox" id="consentimiento" required> <span>He leído la información anterior y la política de tratamiento de datos, y <strong>acepto participar voluntariamente</strong> en esta encuesta. <span class="req">*</span></span></label>
+        <span id="err-consent" class="err-msg" hidden>Para responder la encuesta debe aceptar el consentimiento informado.</span>
+        </div>
+      </fieldset>
+
       <fieldset id="sec-1">
         <legend><span class="num">1</span>Datos del taller</legend>
         <div class="fs-body">
@@ -377,7 +419,7 @@ footer.inst .vig{font-size:12px;font-weight:600;letter-spacing:.04em;text-transf
             <input type="tel" id="telefono" inputmode="tel" autocomplete="off">
           </div>
         </div>
-        <label class="check"><input type="checkbox" id="autoriza"> <span>Autorizo el tratamiento de mis datos personales para la formulación del Plan Municipal de Turismo (Ley 1581 de 2012).</span></label>
+        <label class="check"><input type="checkbox" id="autoriza"> <span>Autorizo el tratamiento de mi nombre y teléfono para convocarme a actividades del Plan Municipal de Turismo, según la <button type="button" class="linkbtn" data-open-policy>política de tratamiento de datos</button> (Ley 1581 de 2012).</span></label>
         <span id="err-datos" class="err-msg" hidden>Para guardar nombre o teléfono, marque la autorización de datos.</span>
         </div>
       </fieldset>
@@ -502,9 +544,63 @@ footer.inst .vig{font-size:12px;font-weight:600;letter-spacing:.04em;text-transf
   <div class="in">
     <img src="marca/logo-colmayor-horizontal.png" alt="Institución Universitaria Colegio Mayor de Antioquia" width="877" height="262">
     <p>Plan Municipal de Turismo de Remedios, Antioquia. Talleres participativos con actores del territorio.</p>
-    <p class="vig">Vigilada por el Ministerio de Educación Nacional</p>
+    <p class="vig">Vigilada por el Ministerio de Educación Nacional<br><a href="#politica" data-open-policy>Política de tratamiento de datos</a></p>
   </div>
 </footer>
+
+<dialog class="policy" id="politica" aria-labelledby="politica-title">
+  <div class="policy-head">
+    <h2 id="politica-title">Política de tratamiento de datos personales</h2>
+    <button type="button" data-close-policy aria-label="Cerrar">×</button>
+  </div>
+  <div class="policy-body">
+    <h3>Responsable del tratamiento</h3>
+    <p>Institución Universitaria Colegio Mayor de Antioquia (Colmayor), institución pública de educación superior, que actúa en el marco de la formulación del Plan Municipal de Turismo de Remedios, Antioquia. Esta política se rige por la Ley 1581 de 2012, el Decreto 1074 de 2015 y la <a href="https://www.colmayor.edu.co/politicas-de-privacidad/" target="_blank" rel="noopener">política de privacidad institucional</a>.</p>
+
+    <h3>Información que recogemos</h3>
+    <ul>
+      <li>Datos de la sesión: taller, fecha, sede y persona encuestadora.</li>
+      <li>Datos de caracterización, sin identificarle: sector, ocupación, lugar de residencia, rango de edad e identidad de género.</li>
+      <li>Sus opiniones sobre el taller y los lugares y atractivos turísticos que recomienda.</li>
+      <li>Nombre y teléfono, solo si usted los escribe y autoriza su uso.</li>
+    </ul>
+    <p>No solicitamos datos sensibles ni datos de niñas, niños o adolescentes. Las preguntas sobre edad e identidad de género son opcionales.</p>
+
+    <h3>Finalidades</h3>
+    <ul>
+      <li>Evaluar la calidad de los talleres participativos y mejorarlos.</li>
+      <li>Construir el inventario de atractivos turísticos y el diagnóstico del Plan Municipal de Turismo.</li>
+      <li>Elaborar informes y análisis estadísticos, académicos e institucionales, siempre con resultados agregados que no permitan identificar a las personas.</li>
+      <li>Convocarle a próximas actividades del plan, únicamente si nos dejó su nombre y teléfono con autorización.</li>
+    </ul>
+
+    <h3>Almacenamiento y seguridad</h3>
+    <p>Las respuestas se guardan en el dispositivo en que se diligencia la encuesta hasta enviarse, y en un formulario y una hoja de cálculo institucionales con acceso restringido al equipo del proyecto. Colmayor aplica medidas técnicas y administrativas para evitar su pérdida, consulta o uso no autorizado. El resumen público de resultados no muestra nombres, teléfonos ni encuestadores.</p>
+
+    <h3>Tiempo de conservación</h3>
+    <p>Los datos se conservan durante la formulación y el seguimiento del Plan Municipal de Turismo y, después, solo por el tiempo que exijan las normas de archivo aplicables a la institución.</p>
+
+    <h3>Derechos del titular</h3>
+    <ul>
+      <li>Conocer, actualizar y rectificar sus datos personales.</li>
+      <li>Solicitar prueba de la autorización otorgada.</li>
+      <li>Ser informado sobre el uso que se ha dado a sus datos.</li>
+      <li>Revocar la autorización o pedir la supresión de sus datos cuando no se respeten los principios, derechos y garantías legales.</li>
+      <li>Presentar quejas ante la Superintendencia de Industria y Comercio.</li>
+      <li>Acceder de forma gratuita a sus datos personales.</li>
+    </ul>
+
+    <h3>Cómo ejercer sus derechos</h3>
+    <p>Presente su consulta o reclamo por el canal de Peticiones, Quejas, Reclamos, Sugerencias, Denuncias y Felicitaciones (PQRSDF) en <a href="https://www.colmayor.edu.co" target="_blank" rel="noopener">www.colmayor.edu.co</a>, indicando que se refiere a la encuesta de los talleres del Plan Municipal de Turismo de Remedios. Las consultas se atienden en un plazo máximo de diez días hábiles y los reclamos en quince días hábiles, según la Ley 1581 de 2012.</p>
+
+    <h3>Participación voluntaria</h3>
+    <p>Responder la encuesta es voluntario. Puede omitir cualquier pregunta o dejar de responder en cualquier momento, sin ninguna consecuencia para usted.</p>
+  </div>
+  <div class="policy-foot">
+    <button type="button" class="btn" data-close-policy>Cerrar</button>
+    <button type="button" class="btn primary" id="policy-accept">Acepto y continúo</button>
+  </div>
+</dialog>
 
 <datalist id="dl-sedes"></datalist>
 <datalist id="dl-lugares"></datalist>
@@ -539,7 +635,7 @@ const GOOGLE_FORM = {
   entries: {
     taller:"entry.1074305907", fecha:"entry.1137723429", sede:"entry.812379465", encuestador:"entry.686011104",
     sector:"entry.1066714337", rol:"entry.1594718619", zona:"entry.1885825655", residencia:"entry.643925965", edad:"entry.125256703", genero:"entry.1799527228",
-    nombre:"entry.915196340", telefono:"entry.366253136", autorizaDatos:"entry.1394587020",
+    nombre:"entry.915196340", telefono:"entry.366253136", autorizaDatos:"entry.1394587020", consentimiento:"",
     metodologia:"entry.1173818189", facilitacion:"entry.1709869296", informacion:"entry.175579399", participacion:"entry.1241584512", logistica:"entry.600796005", horario:"entry.1606808888", utilidad:"entry.134012172", general:"entry.362551083",
     recomienda:"entry.1569329297", gusto:"entry.383213213", mejorar:"entry.424471910", necesidad:"entry.756889083", idea:"entry.551961786",
     atractivos: [{"nombre": "entry.1223772198", "tipo": "entry.1612167062", "zona": "entry.1955214441", "lugar": "entry.1073570837", "acceso": "entry.657527397", "estado": "entry.527623688", "visitantes": "entry.470673058", "porque": "entry.544945161", "representativo": "entry.1135317233"}, {"nombre": "entry.410136601", "tipo": "entry.1835709854", "zona": "entry.941278506", "lugar": "entry.1066660206", "acceso": "entry.1380424446", "estado": "entry.61608969", "visitantes": "entry.47946059", "porque": "entry.556790835", "representativo": "entry.550190397"}, {"nombre": "entry.279919225", "tipo": "entry.1026197316", "zona": "entry.1523351126", "lugar": "entry.425051041", "acceso": "entry.1430348449", "estado": "entry.899549861", "visitantes": "entry.586248550", "porque": "entry.322925541", "representativo": "entry.1182202097"}, {"nombre": "entry.368572389", "tipo": "entry.592814862", "zona": "entry.1198925611", "lugar": "entry.2122939471", "acceso": "entry.1168218351", "estado": "entry.481440976", "visitantes": "entry.1416709525", "porque": "entry.2072824591", "representativo": "entry.1556685251"}, {"nombre": "entry.1195796926", "tipo": "entry.873651279", "zona": "entry.1038156264", "lugar": "entry.2099446095", "acceso": "entry.168259779", "estado": "entry.696549310", "visitantes": "entry.1640252258", "porque": "entry.327306398", "representativo": "entry.1328661718"}]
@@ -619,13 +715,15 @@ function scaleValue(name){ const b = $('.scale[data-name="'+name+'"] button[aria
 function updateProgress(){
   const val = id => ($("#"+id).value||"").trim();
   const done = {
+    0: $("#consentimiento").checked,
     1: !!(val("taller") && val("sede")),
     2: !!(pillValue("sector") || val("rol") || val("zona") || val("edad") || val("genero")),
     3: !!scaleValue("general"),
     4: $$('.place input[id$="-nombre"]').some(i=>i.value.trim()),
     5: !!(pillValue("necesidad", true).length || val("idea"))
   };
-  const n = Object.values(done).filter(Boolean).length;
+  const n = [1,2,3,4,5].filter(k=>done[k]).length;
+  if(done[0]){ $("#err-consent").hidden = true; $("#consent-box").classList.remove("invalid"); }
   $$(".toc li").forEach(li=>li.classList.toggle("done", !!done[li.dataset.sec]));
   $("#prog-fill").style.width = (n/5*100)+"%";
   $("#prog-txt").textContent = n+" de 5";
@@ -634,6 +732,17 @@ function updateProgress(){
 $("#f").addEventListener("input", updateProgress);
 $("#f").addEventListener("change", updateProgress);
 $("#f").addEventListener("click", e=>{ if(e.target.closest(".scale button,.pills button,[data-remove]")) setTimeout(updateProgress); });
+
+// ---------- política de datos ----------
+const policy = $("#politica");
+document.addEventListener("click", e=>{
+  if(e.target.closest("[data-open-policy]")){ e.preventDefault(); policy.showModal(); }
+  else if(e.target.closest("[data-close-policy]")) policy.close();
+});
+policy.addEventListener("click", e=>{ if(e.target === policy) policy.close(); });
+$("#policy-accept").addEventListener("click", ()=>{
+  $("#consentimiento").checked = true; policy.close(); updateProgress();
+});
 
 // ---------- places ----------
 let placeSeq = 0;
@@ -684,12 +793,14 @@ function resetForm(keep){
   if(keep){ $("#taller").value=kept.taller; $("#fecha").value=kept.fecha; $("#sede").value=kept.sede; $("#encuestador").value=kept.enc; }
   else { $("#fecha").value = today(); $("#encuestador").value = store(ENC_KEY)||""; }
   $("#err-datos").hidden = true; $("#form-err").hidden = true;
+  $("#err-consent").hidden = true; $("#consent-box").classList.remove("invalid");
   updateProgress();
 }
 
 function collect(){
   const sat = {}; ASPECTOS.forEach(([k])=>{ if(k!=="general") sat[k]=scaleValue(k); });
   return {
+    consentimiento: $("#consentimiento").checked,
     taller: $("#taller").value, fecha: $("#fecha").value, sede: $("#sede").value.trim(), encuestador: $("#encuestador").value.trim(),
     sector: pillValue("sector"), rol: $("#rol").value, zona: $("#zona").value, residencia: $("#residencia").value.trim(),
     edad: $("#edad").value, genero: $("#genero").value,
@@ -702,6 +813,9 @@ function collect(){
 }
 function validate(r){
   const errs = [];
+  $("#err-consent").hidden = r.consentimiento;
+  $("#consent-box").classList.toggle("invalid", !r.consentimiento);
+  if(!r.consentimiento) errs.push("el consentimiento informado");
   if(!r.taller) errs.push("el taller");
   if(!r.sede) errs.push("la sede");
   if(!r.general) errs.push("la satisfacción general");
@@ -716,7 +830,11 @@ $("#f").addEventListener("submit", async e=>{
   if(sending) return;
   const r = collect();
   const errs = validate(r);
-  if(errs.length){ const m=$("#form-err"); m.textContent = "Falta completar: "+errs.join(", ")+"."; m.hidden=false; return; }
+  if(errs.length){
+    const m=$("#form-err"); m.textContent = "Falta completar: "+errs.join(", ")+"."; m.hidden=false;
+    if(!r.consentimiento) $("#sec-0").scrollIntoView({behavior:"smooth", block:"start"});
+    return;
+  }
   if(!r.autorizaDatos){ r.nombre=""; r.telefono=""; }
   store(ENC_KEY, r.encuestador);
   r.id = "r" + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
@@ -737,6 +855,7 @@ function formPayload(r){
   const E = GOOGLE_FORM.entries, body = new URLSearchParams();
   const put = (entry, val) => { if(entry && val !== "" && val != null) body.append(entry, String(val)); };
   const tallerTxt = ($('#taller option[value="'+r.taller+'"]')||{}).textContent || r.taller;
+  put(E.consentimiento, r.consentimiento ? "Sí" : "");
   put(E.taller, tallerTxt); put(E.sede, r.sede); put(E.encuestador, r.encuestador);
   if(E.fecha && /^\d{4}-\d{2}-\d{2}$/.test(r.fecha)){
     const [y, m, d] = r.fecha.split("-");
@@ -911,9 +1030,9 @@ function saveCsv(name, rows){
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
 }
 $("#exp-resp").addEventListener("click", ()=>{
-  const head = ["id","creado","taller","fecha","sede","encuestador","sector","rol","zona","residencia","edad","genero","nombre","telefono","autoriza_datos"]
+  const head = ["id","creado","taller","fecha","sede","encuestador","sector","rol","zona","residencia","edad","genero","nombre","telefono","autoriza_datos","consentimiento"]
     .concat(ASPECTOS.map(a=>a[0]), ["recomienda","gusto","mejorar","necesidad","idea","n_atractivos"]);
-  const rows = filtered().map(r=>[r.id,r.creado,r.taller,r.fecha,r.sede,r.encuestador,r.sector,r.rol,r.zona,r.residencia,r.edad,r.genero,r.nombre,r.telefono,r.autorizaDatos?"Sí":"No"]
+  const rows = filtered().map(r=>[r.id,r.creado,r.taller,r.fecha,r.sede,r.encuestador,r.sector,r.rol,r.zona,r.residencia,r.edad,r.genero,r.nombre,r.telefono,r.autorizaDatos?"Sí":"No",r.consentimiento===false?"No":"Sí"]
     .concat(ASPECTOS.map(([k])=> k==="general" ? r.general : (r.sat||{})[k]), [r.recomienda,r.gusto,r.mejorar,(r.necesidad||[]).join(" | "),r.idea,(r.atractivos||[]).length]));
   saveCsv("encuesta_talleres_remedios.csv", [head].concat(rows));
 });
